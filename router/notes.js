@@ -19,7 +19,7 @@ router.get('/api/fetchNotes', fetchUser, async (req, res) => {
 })
 
 //ADD NEW NOTE (USER LOGIN REQUIRED)
-router.get('/api/newNote', fetchUser, async (req, res) => {
+router.post('/api/newNote', fetchUser, async (req, res) => {
     const { title, description, tag } = req.body
 
     if(!title){
@@ -29,7 +29,7 @@ router.get('/api/newNote', fetchUser, async (req, res) => {
     try{
         const note = new Note({title, description, tag, user: req.user})
         note.save()
-        res.send(note)
+        res.send(`${newNote.title} addedd sucuce`)
     }
     catch(error){
         console.error(error.message)

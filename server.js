@@ -35,3 +35,4 @@ app.get("/", (req, res) => {
 
 app.use(require("./router/auth"))
 app.use(require("./router/notes"))
+app.use(require("./router/feedback"))
