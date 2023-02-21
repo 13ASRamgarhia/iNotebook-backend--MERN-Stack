@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require("cors")
 const router = express.Router();
 const fetchUser = require('../middleware/fetchUser')
 const Note = require('../models/Notes')
@@ -80,3 +81,5 @@ router.delete('/api/deleteNote/:id', fetchUser, async (req, res) => {
         note = await Note.findByIdAndDelete(req.params.id)
         res.json({"success": "successfully deleted"})
 })
+
+module.exports = router

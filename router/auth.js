@@ -1,6 +1,7 @@
 const express = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const cors = require("cors")
 const router = express.Router()
 require("../db")
 const fetchUser = require('../middleware/fetchUser')
