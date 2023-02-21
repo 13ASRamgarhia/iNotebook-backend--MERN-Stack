@@ -1,5 +1,6 @@
 const express = require("express")
 const dotenv = require("dotenv")
+const cors = require("cors")
 require("./db")
 
 dotenv.config({path: "./CONFIG.env"})
@@ -7,6 +8,10 @@ dotenv.config({path: "./CONFIG.env"})
 const PORT = process.env.PORT
 
 const app = express()
+app.use(cors({
+    "origin": "https://inotebook-cloud-notebook-app.netlify.app/",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  }))
 app.use(express.json())
 
 app.listen(PORT, () => {

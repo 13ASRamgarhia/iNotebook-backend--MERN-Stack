@@ -1,6 +1,7 @@
 const express = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const cors = require("cors")
 const router = express.Router()
 require("../db")
 const fetchUser = require('../middleware/fetchUser')
@@ -8,7 +9,7 @@ const fetchUser = require('../middleware/fetchUser')
 const User = require("../models/User")
 
 //SIGN UP USER
-router.post('/api/signup', async (req, res) => {
+router.post('/api/signup', cors(), async (req, res) => {
     const { fullName, email, password } = req.body
 
     if(!fullName || !email || !password){
@@ -30,7 +31,7 @@ router.post('/api/signup', async (req, res) => {
 })
 
 //LOGIN USER
-router.post("/api/login", async (req, res) => {
+router.post("/api/login", cors(), async (req, res) => {
     const { email, password } = req.body
 
     if(!email || !password){
@@ -55,11 +56,11 @@ router.post("/api/login", async (req, res) => {
         exprires: new Date(Date.now + (1000*60*3)),
         httpOnly: true
     })
-    return res.status(200).json({message: "Login success"})
+    return res.status(200).json({message: "Login success", token})
 })
 
 //GET USER
-router.post('/api/getUser',fetchUser, async (req, res) => {
+router.post('/api/getUser',fetchUser, cors(), async (req, res) => {
     try{
         const userID = req.user;
         const user = await User.findById(userID).select("-password")
