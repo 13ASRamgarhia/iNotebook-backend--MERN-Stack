@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require("cors")
 const router = express.Router();
 const fetchUser = require('../middleware/fetchUser')
 const Note = require('../models/Notes')
@@ -7,7 +6,7 @@ const Note = require('../models/Notes')
 require('../db')
 
 //FETCH NOTES (USER LOGIN REQUIRED)
-router.get('/api/fetchNotes', cors(), fetchUser, async (req, res) => {
+router.get('/api/fetchNotes', fetchUser, async (req, res) => {
     let notes = []
     try{
         notes = await Note.find({user: req.user});
@@ -20,7 +19,7 @@ router.get('/api/fetchNotes', cors(), fetchUser, async (req, res) => {
 })
 
 //ADD NEW NOTE (USER LOGIN REQUIRED)
-router.post('/api/newNote', cors(), fetchUser, async (req, res) => {
+router.post('/api/newNote', fetchUser, async (req, res) => {
     const { title, description, tag } = req.body
 
     if(!title){
@@ -39,7 +38,7 @@ router.post('/api/newNote', cors(), fetchUser, async (req, res) => {
 })
 
 //EDIT NOTE (USER LOGIN AND NOTE ID REQUIRED)
-router.put('/api/editNote/:id', cors(), fetchUser, async (req, res) => {
+router.put('/api/editNote/:id', fetchUser, async (req, res) => {
     const { title, description, tag } = req.body
     const newNote = {}
 
@@ -62,7 +61,7 @@ router.put('/api/editNote/:id', cors(), fetchUser, async (req, res) => {
 })
 
 //DELETE NOTE (USER LOGIN AND NOTE ID REQUIRED)
-router.delete('/api/deleteNote/:id', cors(), fetchUser, async (req, res) => {
+router.delete('/api/deleteNote/:id', fetchUser, async (req, res) => {
     try{
 
     }

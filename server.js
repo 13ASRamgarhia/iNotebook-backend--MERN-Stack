@@ -9,7 +9,7 @@ const PORT = process.env.PORT
 
 const app = express()
 app.use(cors({
-    "origin": "https://inotebook-cloud-notebook-app.netlify.app/",
+    "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
   }))
 app.use(express.json())

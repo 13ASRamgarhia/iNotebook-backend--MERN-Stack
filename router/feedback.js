@@ -1,12 +1,11 @@
 const express = require("express")
-const cors = require("cors")
 const router = express.Router()
 require("../db")
 
 const Feedback = require("../models/Feedback")
 
 //FEEDBACK API
-router.post("/api/feedback", cors(), async (req, res) => {
+router.post("/api/feedback", async (req, res) => {
     const { name, feedback, rating } = req.body
 
     if(!name && !feedback && !rating){
