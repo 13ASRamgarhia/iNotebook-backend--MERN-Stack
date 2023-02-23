@@ -12,18 +12,18 @@ router.post('/api/signup', async (req, res) => {
     const { fullName, email, password } = req.body
 
     if(!fullName || !email || !password){
-        return res.send("Please enter all fields")
+        return res.status(422).json({message: "Please enter all fields"})
     }
         await User.findOne({email: email})
         .then((userExist) => {
         if(userExist){
-            return res.send("User already registered")
+            return res.status(422).json({message: "User already registered"})
         }
 
         const user = new User({fullName, email, password});
         user.save()
-        .then(() => {res.send('User registered successfully')})
-        .catch(() => {res.send("Failed to register")})
+        .then(() => {res.status(200).json({message: 'User registered'})})
+        .catch(() => {res.status(500).json("Failed to register")})
         }
         )
         .catch(error => {console.log(error)});
@@ -34,19 +34,19 @@ router.post("/api/login", async (req, res) => {
     const { email, password } = req.body
 
     if(!email || !password){
-        return res.send("Please enter all data")
+        return res.status(422).json({message: "Please enter all data"})
     }
 
     const userLogin = await User.findOne({email:email})
 
     if(!userLogin){
-        return res.send("Invalid credentials")
+        return res.status(422).json({message: "Invalid credential"})
     }
 
     const isPassMatching = await bcrypt.compare(password, userLogin.password)
 
     if(!isPassMatching){
-        return res.send("Invalid credentials")
+        return res.status(422).json({message: "Invalid credential"})
     }
 
     const token = await userLogin.generateAuthToken()
@@ -55,7 +55,7 @@ router.post("/api/login", async (req, res) => {
         exprires: new Date(Date.now + (1000*60*3)),
         httpOnly: true
     })
-    return res.send("User logged in successfully")
+    return res.status(200).json({message: "Login success", token})
 })
 
 //GET USER
@@ -66,7 +66,7 @@ router.post('/api/getUser',fetchUser, async (req, res) => {
         res.send(user)
     }
     catch(error){
-        res.send(error.message);
+        res.status(400).send({error: error});
     }
 })
 

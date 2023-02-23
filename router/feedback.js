@@ -9,7 +9,7 @@ router.post("/api/feedback", async (req, res) => {
     const { name, feedback, rating } = req.body
 
     if(!name && !feedback && !rating){
-        return res.send("Feedback cannot be empty")
+        return res.status(422).json({message: "Feedback cannot be empty"})
     }
 
     const feed = new Feedback({name, feedback, rating})
@@ -17,9 +17,9 @@ router.post("/api/feedback", async (req, res) => {
     .then(() => {
         res.header("Access-Control-Allow-Origin", "*")
         res.header("Access-Control-Allow-Headers", "X-Requested-With")
-        res.send("Feedback submitted. Thank you")
+        res.status(200).send("Feedback submitted")
     }) 
-    .catch(() => {res.send("Failed to submit feedback. Please try again later")})
+    .catch(() => {res.status(500).send("Failed to submit feedback. Please try again later")})
 })
 
 module.exports = router

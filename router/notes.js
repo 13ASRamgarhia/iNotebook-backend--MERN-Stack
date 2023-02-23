@@ -23,7 +23,7 @@ router.post('/api/newNote', fetchUser, async (req, res) => {
     const { title, description, tag } = req.body
 
     if(!title){
-        return res.status(400).send({error: "Please fill title"})
+        return res.status(400).send({message: "Please fill title"})
     }
 
     try{
@@ -49,11 +49,11 @@ router.put('/api/editNote/:id', fetchUser, async (req, res) => {
     let note = await Note.findById(req.params.id);
 
     if(!note){
-        return res.status(404).json({error: "Not found"})
+        return res.status(404).json({message: "Not found"})
     }
 
     if(note.user.toString() !== req.user){
-        return res.status(401).json({error: "Invalid user"})
+        return res.status(401).json({message: "Invalid user"})
     }
 
     note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new:true})
@@ -71,10 +71,10 @@ router.delete('/api/deleteNote/:id', fetchUser, async (req, res) => {
         let note = await Note.findById(req.params.id);
 
         if(!note){
-            return res.status(404).json({error: "Not found"})
+            return res.status(404).json({message: "Not found"})
         }
         if(note.user.toString() !== req.user){
-            return res.status(401).json({error: "Invalid user"})
+            return res.status(401).json({message: "Invalid user"})
         }
 
         note = await Note.findByIdAndDelete(req.params.id)
