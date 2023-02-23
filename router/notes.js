@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require("cors")
 const router = express.Router();
 const fetchUser = require('../middleware/fetchUser')
 const Note = require('../models/Notes')
@@ -14,8 +13,7 @@ router.get('/api/fetchNotes', fetchUser, async (req, res) => {
         res.send(notes)
     }
     catch(error){
-        console.error(error.message)
-        res.status(400).send({error: error})
+        res.send(error.message)
     }
 })
 
@@ -24,17 +22,16 @@ router.post('/api/newNote', fetchUser, async (req, res) => {
     const { title, description, tag } = req.body
 
     if(!title){
-        return res.status(400).send({error: "Please fill title"})
+        return res.send("Please fill title")
     }
 
     try{
         const note = new Note({title, description, tag, user: req.user})
         note.save()
-        res.send(`A addedd sucuce`)
+        res.send("Note added successfully")
     }
     catch(error){
-        console.error(error.message)
-        res.status(400).send({error: error})
+        res.send(error.message)
     }
 })
 
@@ -50,11 +47,11 @@ router.put('/api/editNote/:id', fetchUser, async (req, res) => {
     let note = await Note.findById(req.params.id);
 
     if(!note){
-        return res.status(404).json({error: "Not found"})
+        returnres.send("Not found")
     }
 
     if(note.user.toString() !== req.user){
-        return res.status(401).json({error: "Invalid user"})
+        return res.send("Invalid user")
     }
 
     note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new:true})
@@ -64,22 +61,22 @@ router.put('/api/editNote/:id', fetchUser, async (req, res) => {
 //DELETE NOTE (USER LOGIN AND NOTE ID REQUIRED)
 router.delete('/api/deleteNote/:id', fetchUser, async (req, res) => {
     try{
-
-    }
-    catch(error){
-        res.status(500).json({error: 'internal server error', message: error.message})
-    }
         let note = await Note.findById(req.params.id);
 
         if(!note){
-            return res.status(404).json({error: "Not found"})
+            return res.send("Not found")
         }
         if(note.user.toString() !== req.user){
-            return res.status(401).json({error: "Invalid user"})
+            return res.send("Invalid user")
         }
 
         note = await Note.findByIdAndDelete(req.params.id)
-        res.json({"success": "successfully deleted"})
+        res.send("successfully deleted")
+    }
+    catch(error){
+        res.send('internal server error ' + error.message)
+    }
+
 })
 
 module.exports = router

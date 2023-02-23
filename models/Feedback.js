@@ -11,6 +11,9 @@ const feedbackSchema = mongoose.Schema({
     feedback: {
         type: String
     },
+    rating: {
+        type: Number
+    },
     date: {
         type: String,
         default: feedbackDate
