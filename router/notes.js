@@ -13,7 +13,8 @@ router.get('/api/fetchNotes', fetchUser, async (req, res) => {
         res.send(notes)
     }
     catch(error){
-        res.send(error.message)
+        console.error(error.message)
+        res.status(400).send({error: error})
     }
 })
 
@@ -22,16 +23,17 @@ router.post('/api/newNote', fetchUser, async (req, res) => {
     const { title, description, tag } = req.body
 
     if(!title){
-        return res.send("Please fill title")
+        return res.status(400).send({error: "Please fill title"})
     }
 
     try{
         const note = new Note({title, description, tag, user: req.user})
         note.save()
-        res.send("Note added successfully")
+        res.send(`A addedd sucuce`)
     }
     catch(error){
-        res.send(error.message)
+        console.error(error.message)
+        res.status(400).send({error: error})
     }
 })
 
@@ -47,11 +49,11 @@ router.put('/api/editNote/:id', fetchUser, async (req, res) => {
     let note = await Note.findById(req.params.id);
 
     if(!note){
-        returnres.send("Not found")
+        return res.status(404).json({error: "Not found"})
     }
 
     if(note.user.toString() !== req.user){
-        return res.send("Invalid user")
+        return res.status(401).json({error: "Invalid user"})
     }
 
     note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new:true})
@@ -61,22 +63,22 @@ router.put('/api/editNote/:id', fetchUser, async (req, res) => {
 //DELETE NOTE (USER LOGIN AND NOTE ID REQUIRED)
 router.delete('/api/deleteNote/:id', fetchUser, async (req, res) => {
     try{
+
+    }
+    catch(error){
+        res.status(500).json({error: 'internal server error', message: error.message})
+    }
         let note = await Note.findById(req.params.id);
 
         if(!note){
-            return res.send("Not found")
+            return res.status(404).json({error: "Not found"})
         }
         if(note.user.toString() !== req.user){
-            return res.send("Invalid user")
+            return res.status(401).json({error: "Invalid user"})
         }
 
         note = await Note.findByIdAndDelete(req.params.id)
-        res.send("successfully deleted")
-    }
-    catch(error){
-        res.send('internal server error ' + error.message)
-    }
-
+        res.json({"success": "successfully deleted"})
 })
 
 module.exports = router
