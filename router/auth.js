@@ -17,7 +17,7 @@ router.post('/api/signup', async (req, res) => {
         await User.findOne({email: email})
         .then((userExist) => {
         if(userExist){
-            return res.status(422).json({message: "User already registered"})
+            return res.status(201).json({message: "User already registered", statusCode: res.statusCode})
         }
 
         const user = new User({fullName, email, password});
@@ -40,13 +40,13 @@ router.post("/api/login", async (req, res) => {
     const userLogin = await User.findOne({email:email})
 
     if(!userLogin){
-        return res.status(422).json({message: "Invalid credential"})
+        return res.status(201).json({message: "Invalid credential", statusCode: res.statusCode})
     }
 
     const isPassMatching = await bcrypt.compare(password, userLogin.password)
 
     if(!isPassMatching){
-        return res.status(422).json({message: "Invalid credential"})
+        return res.status(201).json({message: "Invalid credential", statusCode: res.statusCode})
     }
 
     const token = await userLogin.generateAuthToken()
