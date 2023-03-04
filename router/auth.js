@@ -22,7 +22,7 @@ router.post('/api/signup', async (req, res) => {
 
         const user = new User({fullName, email, password});
         user.save()
-        .then(() => {res.status(200).json({message: 'User registered'})})
+        .then(() => {res.status(200).json({message: 'User registered', statusCode: res.statusCode})})
         .catch(() => {res.status(500).json("Failed to register")})
         }
         )
@@ -55,7 +55,7 @@ router.post("/api/login", async (req, res) => {
         exprires: new Date(Date.now + (1000*60*3)),
         httpOnly: true
     })
-    return res.status(200).json({message: "Login success", token})
+    return res.status(200).json({message: "Login success", token, statusCode: res.statusCode})
 })
 
 //GET USER
