@@ -7,6 +7,8 @@
 **This is backend for the iNotebook app. Please follow the following link for frontend for the app - [iNotebook frontend](https://github.com/13ASRamgarhia/iNotebook-frontend--MERN-Stack)**\
 **CONTACT:** Feel free to contact on LinkedIn in case of any queries - [LinkedIn profile](https://www.linkedin.com/in/13asr/)
 
+**CLICK TITLE TO MOVE TO iNOTEBOOK APP**
+
 ### Available Scripts
 
 In the project directory, you can run:
